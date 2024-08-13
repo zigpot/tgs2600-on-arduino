@@ -14,14 +14,16 @@ void setup() {
 void loop() {
   int rawInput = analogRead(sensorInputPin);
   long r_sensor = ((1024.0 * r_load) / rawInput) - r_load;
-  float rSrO = (float)rS / (float)rO;
+  float rSrO = (float)r_sensor / (float)r_zero;
+
   if (rSrO > X_max) Serial.println("Out of range (above 100 ppm).");
   else if(rSrO < X_min) Serial.println("Out of range (below 1 ppm).");
   else{
-    float ppm = a * pow((float)rS / (float)rO, b);
+    float ppm = a * pow((float)r_sensor / (float)r_zero, b);
     Serial.print("Gas concentration: ");
     Serial.print(ppm);
     Serial.println(" ppm");
   }
+
   delay(1000);
 }
